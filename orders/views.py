@@ -25,7 +25,6 @@ def index(request):
     context = {
         "user": request.user,
         'pizza':Pizza.objects.all(),
-        #'topping':Topping.objects.all(),
         'subs':Subs.objects.all(),
         'pasta':Pasta.objects.all(),
         'salad':Salad.objects.all(),
@@ -37,10 +36,11 @@ def index(request):
     return render(request, "orders/home.html",context)
 
 
-
+#add item to cart
 def additem(request):
     name=request.POST['name']
     price=float(request.POST['price'])
+    #check the toppings
     try:
         pastatopping1=request.POST['pepperoni']
     except:
@@ -50,11 +50,13 @@ def additem(request):
     except:
         pastatopping2=''
         
+    #check size or default size
     try:
         size=request.POST['size']
     except:
         size=''
-        
+    
+    #check whether it is special pizza or not
     try:
         extra=request.POST['ppp']
     except:
@@ -84,13 +86,11 @@ def additem(request):
     return HttpResponseRedirect(reverse('index'))
 
 
-
+#cart
 def cart(request):
     total_order=Cart.objects.values_list('item_price', flat=True).filter(user=request.user,status='initiated')
     total = sum(total_order)
     total_stripe=total*100
-    
-    
     
     
     tops=Topping.objects.all()
@@ -103,22 +103,23 @@ def cart(request):
     }
     return render(request, "orders/cart.html",context)
       
-      
-      
+
+    
+#delete item from cart
+def deletecartitem(request,id):
+    dell=get_object_or_404(Cart,pk=id).delete()
+    return HttpResponseRedirect(reverse('cart'))
+
+#place the order
 def place_order(request):
     orderr=Cart.objects.filter(user=request.user,status='initiated').update(status='completed')
     #send_mail('Pizzashop', 'Hye you received a new order', 'umerjaved178@gmail.com', ['umerjaved178@yahoo.com'], fail_silently=False)
     #orderhist=Orderhistory.objects.get(user=request.user)
     #orderhist.save()
     return HttpResponseRedirect(reverse('index'))
-
-    
-        
-def deletecartitem(request,id):
-    dell=get_object_or_404(Cart,pk=id).delete()
-    return HttpResponseRedirect(reverse('cart'))
     
 
+#admin page that has all previous history
 @permission_required('orders.special_status')
 def orders_page(request):
     cart=Cart.objects.filter(status='completed')
@@ -128,6 +129,7 @@ def orders_page(request):
     return render(request,"orders/orders_admin_page.html",context)
 
 
+#individual user history
 def userhistory(request):
     cart=Cart.objects.filter(user=request.user,status='completed')
     context={
@@ -135,7 +137,7 @@ def userhistory(request):
     }
     return render(request,'orders/userhistory.html',context)
 
-
+#change the order status
 def changestatus(request,id):
     cart=Cart.objects.filter(user=request.user,id=id).update(delivery='delivered')
     return HttpResponseRedirect(reverse('orders_page'))

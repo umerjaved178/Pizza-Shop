@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'stripe',
+    
 ]
 
 MIDDLEWARE = [
@@ -124,10 +124,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SENDGRID_API_KEY = os.getenv('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')
-#email settings
+
+#email settings, but Sendgrid is not working yet
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+SENDGRID_API_KEY = os.getenv('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')
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
