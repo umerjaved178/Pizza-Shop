@@ -1,0 +1,28 @@
+{% extends "orders/base.html" %}
+{% block content %}
+
+<h1>Cart</h1>
+{%for a in cart%}
+    {{forloop.counter}}-
+    {{a.cart_item}}
+    {{a.item_price}}
+    {{a.size}}
+    {{a.extras}}
+    <a href="{% url 'delete' a.id %}" class="btn btn-outline-danger">Delete</a>
+    <br>
+{%endfor%}
+
+<p><h3>Total: ${{total}}</h3></p>
+
+{% if total > 0 %}
+<form action="{% url 'place_order' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name='valueee' value="{{order_id}}">
+    <input type="submit" value="PLACE ORDER" class="btn btn-success">
+</form>
+{% else %}
+<a href="{% url 'index' %}" class="btn btn-link">Add items</a>
+{%endif%}
+
+
+{% endblock content %}

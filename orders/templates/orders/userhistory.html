@@ -1,0 +1,18 @@
+{% extends "orders/base.html" %}
+
+{% block content %}
+
+<h1>Your Purchase History</h1>
+<br>
+{% for a in cart %}
+
+    <p>{{forloop.counter}}-{{a}}  by <b>{{a.user}}</b> </p>
+    
+    {% if a.delivery == 'notdelivered' %}
+        Status:<p class="text-danger"><b>Pending</b></p>
+    {%else%}
+        Status: <p class="text-success">Delivered</p>
+    {% endif %}
+
+{% endfor %}
+{% endblock content %}

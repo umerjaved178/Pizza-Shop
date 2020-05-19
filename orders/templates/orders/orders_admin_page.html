@@ -1,0 +1,16 @@
+{% extends "orders/base.html" %}
+
+{% block content %}
+
+<h1>Orders by All users</h1>
+<br>
+{% for a in cart %}
+    <p>{{forloop.counter}}-{{a}}  by <b>{{a.user}}</b> </p>
+
+    <form method="POST" action="{% url 'status_url' a.id %}"> 
+        {% csrf_token %}
+        <input type="submit" class="btn" name="mybtn" value="Mark it Delivered">
+    </form>
+{% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% extends "orders/base.html" %}
+
+{% block content %}
+<h1>Register</h1>
+{% if message %}
+    <div>
+        {{ message }}
+    </div>
+{% endif %}
+<form action="{% url 'register' %}" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Register"/>
+</form>
+{% endblock content %}

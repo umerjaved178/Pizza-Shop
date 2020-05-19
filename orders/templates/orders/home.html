@@ -1,0 +1,211 @@
+{% extends "orders/base.html" %}
+{% block content %}
+
+
+<div class="container">
+	<div class="row">
+	  <div class="col-sm">
+<h2>Pizza</h2>
+{% for a in pizza %}
+	<b>{{a.name}} </b>
+
+	{% if a.name == 'Mexican Pizza' %}
+		<form action="{% url 'additem' %}" method="POST">
+			{%csrf_token%}
+			Small: ${{a.smallPrice}}
+			<input type='hidden' name="name" value="{{a.name}}" >
+			<input type='hidden' name="price" value="{{a.smallPrice}}" >
+			<input type='hidden' name='size' value="small">
+
+			<!-- START code snippet for drop down menu-->
+			<script>
+				function enableButton(){
+					var selectelem = document.getElementById('dropdownMenu1');
+					var btnelem = document.getElementById('butt1');
+					btnelem.disabled = !selectelem.value;
+				}
+			</script>
+			<div class="dropdown show">
+			<select name="ppp" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required onchange="enableButton()">
+				<option selected="selected" disabled >Toppings</option>
+				{% for a in tops %}
+				<option  value="{{a.toppings}}">{{a}}</option>
+				{% endfor %}
+			</select>
+			</div>
+			<input type="submit" class="btn btn-outline-secondary" disabled value='Add' id='butt1' >
+			<!-- END code snippet for drop down menu-->
+		</form>
+			
+		<form action="{%url 'additem' %}" method="POST">
+			{%csrf_token%}
+			Large: ${{a.largePrice}}
+			<input type="hidden" name="name" value="{{a.name}}">
+			<input type="hidden" name="price" value="{{a.largePrice}}">
+			<input type='hidden' name='size' value="large">
+
+			<!-- START code snippet for drop down menu-->
+			<script>
+				function enableButton2(){
+					var selectelem = document.getElementById('dropdownMenu2');
+					var btnelem = document.getElementById('butt2');
+					btnelem.disabled = !selectelem.value;
+				}
+			</script>
+			<div class="dropdown show">
+			<select name="ppp" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required onchange="enableButton2()">
+				<option selected="selected" disabled >Toppings</option>
+				{% for a in tops %}
+				<option value="{{a}}">{{a}}</option>
+				{% endfor %}
+			</select>
+			</div>
+			<input type="submit" class="btn btn-outline-secondary" disabled value='Add' id='butt2' >
+			<!-- END code snippet for drop down menu-->
+		</form>
+		<br>
+	{% else %}
+
+	<form action="{% url 'additem' %}" method="POST">
+		{%csrf_token%}
+		Small: ${{a.smallPrice}}
+		<input type='hidden' name="name" value="{{a.name}}" >
+		<input type='hidden' name="price" value="{{a.smallPrice}}" >
+		<input type='hidden' name='size' value="small">
+		<input type="submit" class="btn btn-outline-secondary" value='Add'>
+	</form>
+		
+	<form action="{%url 'additem' %}" method="POST">
+		{%csrf_token%}
+		Large: ${{a.largePrice}}
+		<input type="hidden" name="name" value="{{a.name}}">
+		<input type="hidden" name="price" value="{{a.largePrice}}">
+		<input type='hidden' name='size' value="large">
+		<input type="submit" class="btn btn-outline-secondary" value="Add" >
+	</form>
+	{%endif%}
+	<br>
+{%endfor%}
+</div>
+
+
+<div class="col-sm">
+<h2>Subs</h2>
+{% for a in subs %}
+	<b>{{a.nameSub}}</b>
+	<form action="{%url 'additem' %}" method="POST">
+		{%csrf_token%}
+		Small: ${{a.smallSub}}
+		<input type="hidden" name='name' value="{{a.nameSub}}" >
+		<input type="hidden" name="price" value="{{a.smallSub}}">
+		<input type="hidden" name="size" value="small">
+		<input type="submit" class="btn btn-outline-secondary" value="Add" >
+	</form>
+
+	<form action="{%url 'additem' %}" method="POST">
+		{%csrf_token%}
+		Large: ${{a.largeSub}}
+		<input type="hidden" name='name' value="{{a.nameSub}}" >
+		<input type="hidden" name="price" value="{{a.smallSub}}">
+		<input type="hidden" name="size" value="large">
+		<input type="submit" class="btn btn-outline-secondary" value="Add" >
+	</form>
+	<br>
+{%endfor%}
+</div>
+
+
+<div class="col-sm">
+<h2>Pasta</h2>
+{% for a in pasta %}
+	<b>{{a.pastaName}}</b>
+
+	{% if a.pastaName == 'Baked Ziti w/Chicken' %}
+	<form action="{% url 'additem' %}" method="POST">
+		Price: ${{a.pricePasta}}
+		{% csrf_token %}
+		<input type="hidden" name='name' value="{{a.pastaName}}" >
+		<input type="hidden" name='price' value="{{a.pricePasta}}" >
+		<!--checkbox for toppings-->
+		<br>
+		<i>Additional toppings:</i>
+		<div class="checkbox" >
+			<label><input type="checkbox" name="pepperoni" value="pepperoni">Pepperoni</label>
+		</div>
+		<div class="checkbox">
+			<label><input type="checkbox" name="olives" value="olives">Olives</label>
+		</div>
+
+		<input type="submit" class="btn btn-outline-secondary" value="Add" >
+	</form>
+	{% else %}
+	<form action="{% url 'additem' %}" method="POST">
+		Price: ${{a.pricePasta}}
+		{% csrf_token %}
+		<input type="hidden" name='name' value="{{a.pastaName}}" >
+		<input type="hidden" name='price' value="{{a.pricePasta}}" >
+		<input type="submit" class="btn btn-outline-secondary" value="Add" >
+	</form>
+	{% endif %}
+	<br>
+{%endfor%}
+</div>
+
+
+<div class="col-sm">
+<h2>Salad</h2>
+{% for a in salad %}
+	<b>{{a.saladName}}</b>
+	
+	<form action="{% url 'additem' %}" method="POST">
+		Salad Price: ${{a.priceSalad}}
+		{% csrf_token %}
+		<input type="hidden" name='name' value="{{a.saladName}}" >
+		<input type="hidden" name='price' value="{{a.priceSalad}}" >
+		<input type="submit" class="btn btn-outline-secondary" value="Add" >
+	</form>
+	<br>
+{%endfor%}
+</div>
+</div>
+</div>
+
+{%comment%}
+<div class="col-sm">
+<h2>Dinner Platter</h2>
+{% for a in dinnerplatter %}
+	<b>{{a.nameDinn}}</b>
+	
+	<form action="{% url 'additem' %}" method="POST">
+		Small: ${{a.smallDinn}}
+		{% csrf_token %}
+		<input type="hidden" name='name' value="{{a.nameDinn}}" >
+		<input type="hidden" name='price' value="{{a.smallDinn}}" >
+		<input type="submit" class="btn btn-outline-secondary" value="Add" >
+	</form>
+
+	
+	<form action="{% url 'additem' %}" method="POST">
+		Large: ${{a.largeDinn}}
+		{% csrf_token %}
+		<input type="hidden" name='name' value="{{a.nameDinn}}" >
+		<input type="hidden" name='price' value="{{a.largeDinn}}" >
+		<input type="submit" class="btn btn-outline-secondary" value="Add" >
+	</form>
+	<br>
+{%endfor%}
+</div>
+{%endcomment%}
+
+
+<hr>
+{% if total %}
+	<a href="{% url 'cart' %}" class="btn btn-link"><h1> Cart ${{total}}</h1></a>
+{%else%}
+	<h1>Cart $ {{total}}</h1>
+{%endif%}
+<br>
+
+<br>
+
+{% endblock content %}
